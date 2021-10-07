@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> New Document </TITLE>
+<META NAME="Generator" ConTENT="EditPlus">
+<META NAME="Author" ConTENT="">
+<META NAME="Keywords" ConTENT="">
+<META NAME="Description" ConTENT="">
+</HEAD>
+<BODY>
+<form method=post action="a2_post.php">
+<input type=button value="행추가" onclick="add_tr();">
+<input type=button value="열추가" onclick="add_td();">
+<input type=button value="행삭제" onclick="del_row();">
+<input type=button value="열삭제" onclick="del_col();">
+<table id='tbl' border=1>
+    <thead id='thd'>
+        <tr>
+            <td>
+                <input type=text name=opty size=4> 
+                <input type=text name=optx size=4>
+            </td>
+            <td>
+                <input type=text name='optx_subj[]' size=10>
+            </td>
+        </tr>
+    </thead>
+    <tbody id='tbd'>
+        <tr>
+            <td><input type=text name='opty_subj[]' size=10></td>
+            <td><input type=text name='opt[][]' size=10></td>
+        </tr>
+    </tbody>
+</table>
+<input type=submit>
+</form>
+<span id=msg></span>
+ 
+<script>
+// 반드시 스크립트가 하단에 위치해야함!
+var tbl = document.getElementById('tbl');
+var thd = document.getElementById('thd');
+var tbd = document.getElementById('tbd');
+var tr = null;
+var td = null;
+var x=1, y=1;
+function add_tr() 
+{
+    // 행 제목 추가
+    tr = document.createElement('tr');
+    tbd.appendChild(tr);
+    td = document.createElement('td');
+    tr.appendChild(td);
+    add_input('opty_subj[]');
+    // 열의 갯수에 따라 추가된 행의 열 추가
+    var thd_td = thd.getElementsByTagName('td');
+    for (i=0; i<thd_td.length-1; i++)
+    {
+        td = document.createElement('td');
+        tr.appendChild(td);
+        add_input('opt[][]');
+    }
+}
+function add_td() 
+{
+    // 열 제목 추가
+    var thd_tr = thd.getElementsByTagName('tr');
+    td = document.createElement('td');
+    thd_tr[0].appendChild(td);
+    add_input('optx_subj[]');
+    var tbd_tr = tbd.getElementsByTagName('tr');
+    for (i=0; i<tbd_tr.length; i++) {
+        //var td_tag = tr_tag[i].getElementsByTagName("td");
+        td = document.createElement('td');
+        tbd_tr[i].appendChild(td);
+        add_input('opt[][]');
+    }
+}
+function add_input(name)
+{
+    var inp = document.createElement('input');
+    inp.setAttribute('type', 'text');
+    inp.setAttribute('size', '10');
+    inp.setAttribute('name', name);
+    td.appendChild(inp);
+}
+function del_row()
+{
+    var tbd_tr = tbd.getElementsByTagName('tr');
+    //document.getElementById('msg').innerHTML = tbd_tr.length;
+    if (tbd_tr.length > 1)
+        tbd.deleteRow(tbd_tr.length-1);
+}
+function del_col()
+{
+    var thd_tr = thd.getElementsByTagName('tr');
+    var thd_td = thd.getElementsByTagName('td');
+    //document.getElementById('msg').innerHTML = thd_td.length;
+    if (thd_td.length > 2) {
+        thd_tr[0].deleteCell(thd_td.length-1);
+        var tbd_tr = tbd.getElementsByTagName('tr');
+        for (i=0; i<tbd_tr.length; i++) {
+            var tr_td = tbd_tr[i].getElementsByTagName('td');
+            tbd_tr[i].deleteCell(tr_td.length-1);
+        }
+    }
+}
+</script>
+</BODY>
+</HTML>
